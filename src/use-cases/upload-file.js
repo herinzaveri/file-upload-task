@@ -1,4 +1,4 @@
-module.exports = function makeUploadFile({fs, path, filesDb, Joi, ValidationError}) {
+module.exports = function makeUploadFile({fs, path, filesDb, fileProcessingQueue, Joi, ValidationError}) {
   return async function uploadFile({file, title, description, userId}) {
     if (!file) {
       throw new Error('No file uploaded');
@@ -23,6 +23,13 @@ module.exports = function makeUploadFile({fs, path, filesDb, Joi, ValidationErro
       title,
       description,
       status: 'uploaded',
+    });
+
+    // Enqueue background job for processing
+    await fileProcessingQueue.add('process', {
+      fileId: uploadedFile.id,
+      filePath,
+      userId,
     });
 
     // Return file info

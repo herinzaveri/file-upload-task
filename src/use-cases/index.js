@@ -7,6 +7,7 @@ const path = require('path');
 const _ = require('lodash');
 
 const config = require('../config');
+const fileProcessingQueue = require('../queues/fileProcessingQueue');
 
 // Import all DBs
 const dbs = require('../data-access');
@@ -31,6 +32,7 @@ const uploadFile = makeUploadFile({
   fs,
   path,
   filesDb: dbs.filesDb,
+  fileProcessingQueue: fileProcessingQueue,
   Joi,
   ValidationError,
 });

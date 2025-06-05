@@ -4,6 +4,8 @@ module.exports = function makeFilesDb({pg, generateId, moment}) {
   return Object.freeze({
     addFile,
     getFileByIdAndUserId,
+    updateFileStatus,
+    updateFileProcessed,
   });
 
   async function addFile({userId, filename, path, title, description, status}) {
@@ -32,6 +34,27 @@ module.exports = function makeFilesDb({pg, generateId, moment}) {
 
     const result = await pg.query(query, values);
 
+    return result.rows[0];
+  }
+
+  async function updateFileStatus(fileId, status) {
+    const query = `UPDATE ${FILES_TABLE_NAME}
+                   SET status = $1
+                   WHERE id = $2
+                   RETURNING *`;
+    const values = [status, fileId];
+    const result = await pg.query(query, values);
+    return result.rows[0];
+  }
+
+  async function updateFileProcessed(fileId, {status, extractedData}) {
+    const query = `UPDATE ${FILES_TABLE_NAME}
+                   SET status = $1,
+                       extracted_data = $2
+                   WHERE id = $3
+                   RETURNING *`;
+    const values = [status, extractedData, fileId];
+    const result = await pg.query(query, values);
     return result.rows[0];
   }
 };
