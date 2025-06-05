@@ -1,0 +1,50 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "google"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 14,
+    "destructuring": true
+  },
+  "env": {
+    "node": true,
+    "es2022": true,
+    "mocha": true
+  },
+  "rules": {
+    "guard-for-in": "off",
+    "no-promise-executor-return": "error",
+    "no-unreachable-loop": "error",
+    "arrow-spacing": "error",
+    "space-infix-ops": "error",
+    "max-len": [
+      "error",
+      {
+        "code": 120,
+        "ignoreUrls": true,
+        "tabWidth": 2
+      }
+    ],
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 0 }],
+    "require-jsdoc": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "rest-service.js"
+      ],
+      "rules": {
+        "new-cap": [
+          "error",
+          {
+            "capIsNewExceptions": [
+              "Router"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "ignorePatterns": ["**/*.ejs"]
+}
